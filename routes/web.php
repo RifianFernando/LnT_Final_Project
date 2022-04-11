@@ -1,6 +1,9 @@
 <?php
 
+use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +28,10 @@ require __DIR__.'/auth.php';
 
 Route::get('/home1', function () {
     return view('auth.login1');
+});
+
+//admin
+Route::group(['middleware' => AdminMiddleware::class], function () {
+    Route::get('/CreateProduct', [AdminController::class, 'createProduct'])->name('createProduct');
+    Route::get('/dashboardAdmin', [AdminController::class, 'dashboardAdmin'])->name('dashboardAdmin');
 });

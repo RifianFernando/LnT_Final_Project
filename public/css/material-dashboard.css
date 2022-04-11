@@ -17427,6 +17427,31 @@ pre[class*="language-"] {
 .token.entity {
   cursor: help; }
 
+.form-add-cart{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.sisa-barang{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  text-align: center;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #8c123b;
+}
+.sisa-barang::-webkit-outer-spin-button,
+.sisa-barang::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.sisa-barang[type=number] {
+  -moz-appearance: textfield;
+}
 /*
  * Container style
  */
@@ -17529,5 +17554,4 @@ pre[class*="language-"] {
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .ps {
     overflow: auto !important; } }
-
 /*# sourceMappingURL=material-dashboard.css.map */

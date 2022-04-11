@@ -6,7 +6,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <title>
-    Material Dashboard 2 by Creative Tim
+    Sign Up PT Musang
   </title>
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
   <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
@@ -41,12 +41,6 @@
                     Dashboard
                   </a>
                 </li>
-                  <li class="nav-item">
-                    <a class="nav-link me-2" href="{{ route('register') }}">
-                      <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
-                      Sign Up
-                    </a>
-                  </li>
                   <li class="nav-item">
                     <a class="nav-link me-2" href="{{ route('login') }}">
                       <i class="fas fa-key opacity-6 text-dark me-1"></i>
