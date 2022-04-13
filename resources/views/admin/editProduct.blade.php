@@ -5,13 +5,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>
-    Add Product
+    Edit Product
   </title>
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <link id="pagestyle" href="{{ asset('css/material-dashboard.css') }}" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <link rel="stylesheet" href="{{ asset('css/addproduct.css') }}">
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -34,7 +38,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('dashboardAdmin') }}">
+          <a class="nav-link text-white" href="{{ route('dashboardAdmin') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
@@ -42,11 +46,11 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="{{ route('createProduct') }}">
+          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('createProduct') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">add</i>
+              <i class="material-icons opacity-10">update</i>
             </div>
-            <span class="nav-link-text ms-1">Add Product</span>
+            <span class="nav-link-text ms-1">Edit Product</span>
           </a>
         </li>
         <li class="nav-item">
@@ -113,16 +117,11 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Product</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Edit</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0">Listing</h6>
+          <h6 class="font-weight-bolder mb-0">Product</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            <form class="input-group input-group-outline" action="" method="GET">
-              <input type="text" class="form-control" name="cari" placeholder="Search Product">
-            </form>
-          </div>
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
@@ -144,70 +143,74 @@
           <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 class="text-white text-capitalize ps-3">List Product</h6>
+                <h6 class="text-white text-capitalize ps-3">Edit Product</h6>
               </div>
             </div>
             <div class="card-body px-0 pb-2">
               <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">nama barang</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">kategori</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Delete</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">harga dan stock</th>
-                      <th class="text-secondary opacity-7"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @if($products->count() == 0)
-                      <tr>
-                        <td colspan="5" class="text-center font-weight-bolder">Produk Kosong</td>
-                      </tr>
-                    @endif
-                    @foreach ($products as $product)
-                        <tr>
-                          <td>
-                            <div class="d-flex px-2 py-1">
-                              <div>
-                                <img src="{{ asset('storage/'.$product->image) }}" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
-                              </div>
-                              <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm">{{ $product->name }}</h6>
-                              </div>
+                <div class="isi-addproduct">
+                      <form action="{{ route('update', ['id'=>$product->id]) }}" method="POST" enctype="multipart/form-data" class="isi-data">
+                        @csrf
+                        @method('Patch')
+                        @if($success = Session::get('success'))
+                          <div class="alert alert-success font-weight-bolder">
+                            {{ $success }}
+                          </div>
+                        @endif
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Product Name</label>
+                            @error('name')
+                                <div class="text-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                            <input name="name" required value="{{ $product->name }}" type="text" class="form-control rounded-top @error ('name') is invalid @enderror" id="formGroupExampleInput" placeholder="Input name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category product</label>
+                            @error('category')
+                                <div class="text-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                            <input name="category" required value="{{ $product->category }}" type="text" class="form-control rounded-top @error ('category') is invalid @enderror" id="formGroupExampleInput" placeholder="Input category">
+                        </div>
+                        
+                        <div class="mb-3">
+                          <label for="quantity" class="form-label">Quantity product</label>
+                          @error('quantity')
+                                <div class="text-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                          <input name="quantity" required value="{{ $product->quantity }}" type="number" class="form-control rounded-top @error ('quantity') is invalid @enderror" id="formGroupExampleInput" placeholder="Input quantity">
+                        </div>
+
+                        <div class="mb-3">
+                          <label for="image" class="form-label">Brand image</label>
+                          <div class="img-update-div">
+                            <img class="img-update" src="{{ asset('storage/'. $product->image) }}" alt="">
+                          </div>
+                          @error('image')
+                            <div class="text-danger">
+                                {{ $message }}
                             </div>
-                          </td>
-                          <td>
-                            <p class="text-xs font-weight-bold mb-0">{{ $product->category }}</p>
-                          </td>
-                          <td class="align-middle text-center text-sm">
-                            <form action="{{ route('deleteProduct', $product->id) }}" method="POST">
-                              @csrf
-                             <button class="delete-product" type="submit"><span type="submit" class="badge badge-sm bg-gradient-danger">delete</span></button>
-                            </form>
-                          </td>
-                          <td class="align-middle text-center">
-                            @php
-                              $angka = $product->price;
-                              $hasil_rupiah = "Rp" . number_format($angka,2,',','.');
-                            @endphp
-                            <span class="text-secondary text-xs font-weight-bold">{{ $hasil_rupiah }}<br>
-                              <form class="form-add-cart" action="" method="post">
-                                @csrf
-                                <input class="sisa-barang" value="{{ $product->quantity }}" type="number" readonly>
-                              </form>
-                            </span>
-                          </td>
-                          <td class="align-middle">
-                            <a href="{{ route('updateProduct', ['id'=>$product->id]) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                              Edit
-                            </a>
-                          </td>
-                        </tr>
-                    @endforeach
-                    
-                  </tbody>
-                </table>
+                          @enderror
+                            <input type="file" name="image" required value="{{ asset('storage/'.$product->image) }}" class="form-control rounded-top @error ('image') is invalid @enderror">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Product Price</label>
+                            @error('price')
+                              <div class="text-danger">
+                                  {{ $message }}
+                              </div>
+                            @enderror
+                            <input name="price" required value="{{ $product->price }}" type="number" class="form-control rounded-top @error ('price') is invalid @enderror" id="formGroupExampleInput" placeholder="Input Price Rp">
+                        </div>
+                        <button type="submit" class="btn btn-success">Insert</button>
+                    </form>
               </div>
             </div>
           </div>

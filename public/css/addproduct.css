@@ -27,3 +27,17 @@
   -webkit-appearance: none;
   margin: 0;
 }
+
+.img-update-div{
+    display: flex;
+    justify-content: flex-start;
+    width: 40%;
+    height: 40%;
+    margin-bottom: 50px;
+}
+
+.img-update{
+    width: 100%;
+    border-radius: 20px;
+    height: 100%;
+}

@@ -23,7 +23,7 @@ Route::get('/AboutUs', function () {
     return view('about', ['title' => 'About Us']);
 })->name('about');
 
-Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+Route::get('/cart', [CartController::class, 'cart'])->middleware('auth')->name('cart');
 
 Route::get('add-to-cart/{id}', [CartController::class, 'addToCart'])->name('add.to.cart');
 Route::patch('update-cart', [CartController::class, 'update'])->name('update.cart');
@@ -44,4 +44,8 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
     Route::post('/addProduct', [AdminController::class, 'addProduct'])->name('addProduct');
 
     Route::post('/deleteProduct/{id}', [AdminController::class, 'deleteProduct'])->name('deleteProduct');
+
+    Route::get('/updateProduct/{id}', [AdminController::class, 'updateProduct'])->name('updateProduct');
+
+    Route::patch('/updateProduct/{id}', [AdminController::class, 'update'])->name('update');
 });

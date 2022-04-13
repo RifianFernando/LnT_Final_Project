@@ -6,6 +6,7 @@ use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Http\Requests\ProductRequest;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -27,7 +28,7 @@ class AdminController extends Controller
     }
 
     public function addProduct(ProductRequest $request){
-        $validate = $request->validate([
+        $request->validate([
             'image' => 'required|min:5|mimes:jpeg,jpg,png,gif',
         ]);
         $path = $request->file('image')->store('public/Images');
@@ -50,5 +51,34 @@ class AdminController extends Controller
 
         return redirect(route('dashboardAdmin'))->with('success', 'Produk berhasil dihapus');
     }
+     
+    public function updateProduct($id){
+        $product = Products::find($id);
         
+        return view('admin.editProduct', ['product' => $product]);
+    }
+
+    public function update(ProductRequest $request, $id){
+        $request->validate([
+            'image' => 'required|min:5|mimes:jpeg,jpg,png,gif',
+        ]);
+        if($request->hasFile('image')){
+            $img_update = Products::find($id)->image;
+            Storage::delete($img_update);
+            // 2. possibility
+            unlink(storage_path('app/public/'.$img_update));
+            $path = $request->file('image')->store('public/Images');
+            $path = substr($path, strlen('public/'));
+            $product = Products::find($id);
+            $product->update([
+                'name' => $request->name,
+                'category' => $request->category,
+                'quantity' => $request->quantity,
+                'image' => $path,
+                'price' => $request->price,
+            ]);
+        }
+
+        return redirect(route('createProduct'))->with('success', 'Produk berhasil diupdate');
+    }
 }
