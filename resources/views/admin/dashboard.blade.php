@@ -118,14 +118,14 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Tables</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Product</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0">Tables</h6>
+          <h6 class="font-weight-bolder mb-0">Listing</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
             <form class="input-group input-group-outline" action="" method="GET">
-              <input type="text" class="form-control" name="cari">
+              <input type="text" class="form-control" name="cari" placeholder="Search Product">
             </form>
           </div>
           <ul class="navbar-nav  justify-content-end">
@@ -175,17 +175,15 @@
                           <td>
                             <div class="d-flex px-2 py-1">
                               <div>
-                                <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+                                <img src="{{ asset('storage/'.$product->image) }}" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
                               </div>
                               <div class="d-flex flex-column justify-content-center">
                                 <h6 class="mb-0 text-sm">{{ $product->name }}</h6>
-                                <p class="text-xs text-secondary mb-0">john@creative-tim.com</p>
                               </div>
                             </div>
                           </td>
                           <td>
                             <p class="text-xs font-weight-bold mb-0">{{ $product->category }}</p>
-                            <p class="text-xs text-secondary mb-0">Organization</p>
                           </td>
                           <td class="align-middle text-center text-sm">
                             <form action="{{ route('deleteProduct', $product->id) }}" method="POST">
@@ -194,10 +192,14 @@
                             </form>
                           </td>
                           <td class="align-middle text-center">
-                            <span class="text-secondary text-xs font-weight-bold">Rp5,000.00<br>
+                            @php
+                              $angka = $product->price;
+                              $hasil_rupiah = "Rp" . number_format($angka,2,',','.');
+                            @endphp
+                            <span class="text-secondary text-xs font-weight-bold">{{ $hasil_rupiah }}<br>
                               <form class="form-add-cart" action="" method="post">
                                 @csrf
-                                <input class="sisa-barang" value="23" type="number">
+                                <input class="sisa-barang" value="{{ $product->quantity }}" type="number">
                               </form>
                             </span>
                           </td>

@@ -4,6 +4,7 @@ use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +17,17 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [AdminController::class, 'home'])->name('home');
+
+Route::get('/AboutUs', function () {
+    return view('about', ['title' => 'About Us']);
+})->name('about');
+
+Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+
+Route::get('add-to-cart/{id}', [CartController::class, 'addToCart'])->name('add.to.cart');
+Route::patch('update-cart', [CartController::class, 'update'])->name('update.cart');
+Route::delete('remove-from-cart', [CartController::class, 'remove'])->name('remove.from.cart');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -10,13 +10,10 @@
             <a class="nav-link {{($title === "Home") ? 'active' : ''}}" aria-current="page" href="/"><b> Home </b></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{($title === "About Us") ? 'active' : ''}}" aria-current="page" href="/about"><b>About Us</b></a>
+            <a class="nav-link {{($title === "About Us") ? 'active' : ''}}" aria-current="page" href="/AboutUs"><b>About Us</b></a>
           </li>
           <li class="nav-item">
             <a class="nav-link {{($title === "Cart") ? 'active' : ''}}" aria-current="page" href="{{ route('cart') }}"><b>Cart</b></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {{($title === "Create") ? 'active' : ''}}" aria-current="page" href="/addproduct"><b>Add Product</b></a>
           </li>
           <li class="nav-item">
             <a class="nav-link {{($title === "delete") ? 'active' : ''}}" aria-current="page" href="/deleteproduct"><b>Delete Product</b></a>
@@ -24,7 +21,17 @@
         </ul>
         <ul class= "navbar-nav ms-auto">
         <li class= "nav-item">
-            <a class="nav-link {{($title === "Login") ? 'active' : ''}}" aria-current="page" href="/Login"><i class="bi bi-box-arrow-in-right"></i><b>Login</b></a>
+            @if(Route::has('login'))
+                @auth
+                    @if(Auth::user()->is_admin == true)
+                        <a class="nav-link" href="{{ route('dashboardAdmin') }}"><b>Dashboard</b></a>
+                    @else
+                        <a class="nav-link" href="{{ route('dashboard') }}"><b>Dashboard</b></a>
+                    @endif
+                @else
+                    <a class="nav-link" aria-current="page" href="{{ route('login') }}"><i class="bi bi-box-arrow-in-right"></i><b>Login</b></a>
+                @endauth
+            @endif
         </li>
         </ul>
       </div>

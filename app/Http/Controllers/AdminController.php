@@ -9,6 +9,11 @@ use App\Http\Requests\ProductRequest;
 
 class AdminController extends Controller
 {
+    public function home()
+    {
+        $products = Products::all();
+        return view('products', ['title' => 'Home', 'products' => $products]);
+    }
     public function createProduct(){
         
         return view('admin.createProduct');

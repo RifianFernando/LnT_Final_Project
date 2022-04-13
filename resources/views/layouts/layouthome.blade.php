@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -16,7 +16,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 
-    <link rel="stylesheet" href="css/style1.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="css/loginform.css">
     <title>Shoppil | {{ $title }}</title>
   </head>
