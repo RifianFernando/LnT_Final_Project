@@ -11,7 +11,11 @@
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <link id="pagestyle" href="{{ asset('css/material-dashboard.css') }}" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <link rel="stylesheet" href="{{ asset('css/addproduct.css') }}">
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -34,7 +38,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('dashboardAdmin') }}">
+          <a class="nav-link text-white" href="{{ route('dashboardAdmin') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
@@ -42,7 +46,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="{{ route('createProduct') }}">
+          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('createProduct') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">add</i>
             </div>
@@ -158,53 +162,31 @@
             </div>
             <div class="card-body px-0 pb-2">
               <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">nama barang</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">kategori</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Delete</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">harga dan stock</th>
-                      <th class="text-secondary opacity-7"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">John Michael</h6>
-                            <p class="text-xs text-secondary mb-0">john@creative-tim.com</p>
-                          </div>
+                <div class="isi-addproduct">
+                      <form action="{{ route('addProduct') }}" method="POST" enctype="multipart/form-data" class="isi-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Product Name</label>
+                            <input name="name" required value="{{ old('name') }}" type="text" class="form-control rounded-top @error ('name') is invalid @enderror" id="formGroupExampleInput" placeholder="Input name">
                         </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Manager</p>
-                        <p class="text-xs text-secondary mb-0">Organization</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <a href=""> <span class="badge badge-sm bg-gradient-danger">delete</span></a>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">Rp5,000.00<br>
-                          <form class="form-add-cart" action="" method="post">
-                            @csrf
-                            <input class="sisa-barang" value="23" type="number">
-                          </form>
-                        </span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr>
-                    
-                  </tbody>
-                </table>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category product</label>
+                            <input name="category" required value="{{ old('category') }}" type="text" class="form-control rounded-top @error ('category') is invalid @enderror" id="formGroupExampleInput" placeholder="Input category">
+                        </div>
+                        <div class="mb-3">
+                          <label for="quantity" class="form-label">Quantity product</label>
+                          <input name="quantity" required value="{{ old('Quantity') }}" type="number" class="form-control rounded-top @error ('Quantity') is invalid @enderror" id="formGroupExampleInput" placeholder="Input Quantity">
+                      </div>
+                        <div class="mb-3">
+                          <label for="image" class="form-label">Brand image</label>
+                            <input type="file" name="image" required value="{{ old('image') }}" class="form-control rounded-top @error ('image') is invalid @enderror">
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Product Price</label>
+                            <input name="price" required value="{{ old('price') }}" type="number" class="form-control rounded-top @error ('price') is invalid @enderror" id="formGroupExampleInput" placeholder="Input Price Rp">
+                        </div>
+                        <button type="submit" class="btn btn-success">Insert</button>
+                    </form>
               </div>
             </div>
           </div>

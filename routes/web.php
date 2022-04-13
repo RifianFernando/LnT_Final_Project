@@ -26,12 +26,9 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/home1', function () {
-    return view('auth.login1');
-});
-
 //admin
 Route::group(['middleware' => AdminMiddleware::class], function () {
     Route::get('/CreateProduct', [AdminController::class, 'createProduct'])->name('createProduct');
     Route::get('/dashboardAdmin', [AdminController::class, 'dashboardAdmin'])->name('dashboardAdmin');
+    Route::post('/addProduct', [AdminController::class, 'addProduct'])->name('addProduct');
 });
