@@ -157,7 +157,7 @@
           <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                <h6 class="text-white text-capitalize ps-3">List Product</h6>
+                <h6 class="text-white text-capitalize ps-3">Add Product</h6>
               </div>
             </div>
             <div class="card-body px-0 pb-2">
@@ -165,25 +165,55 @@
                 <div class="isi-addproduct">
                       <form action="{{ route('addProduct') }}" method="POST" enctype="multipart/form-data" class="isi-data">
                         @csrf
+                        
                         <div class="mb-3">
                             <label for="name" class="form-label">Product Name</label>
+                            @error('name')
+                                <div class="text-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                             <input name="name" required value="{{ old('name') }}" type="text" class="form-control rounded-top @error ('name') is invalid @enderror" id="formGroupExampleInput" placeholder="Input name">
                         </div>
+
                         <div class="mb-3">
                             <label for="category" class="form-label">Category product</label>
+                            @error('category')
+                                <div class="text-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                             <input name="category" required value="{{ old('category') }}" type="text" class="form-control rounded-top @error ('category') is invalid @enderror" id="formGroupExampleInput" placeholder="Input category">
                         </div>
+                        
                         <div class="mb-3">
                           <label for="quantity" class="form-label">Quantity product</label>
-                          <input name="quantity" required value="{{ old('Quantity') }}" type="number" class="form-control rounded-top @error ('Quantity') is invalid @enderror" id="formGroupExampleInput" placeholder="Input Quantity">
-                      </div>
+                          @error('quantity')
+                                <div class="text-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                          <input name="quantity" required value="{{ old('quantity') }}" type="number" class="form-control rounded-top @error ('quantity') is invalid @enderror" id="formGroupExampleInput" placeholder="Input quantity">
+                        </div>
+
                         <div class="mb-3">
                           <label for="image" class="form-label">Brand image</label>
+                          @error('image')
+                            <div class="text-danger">
+                                {{ $message }}
+                            </div>
+                          @enderror
                             <input type="file" name="image" required value="{{ old('image') }}" class="form-control rounded-top @error ('image') is invalid @enderror">
                         </div>
+
                         <div class="mb-3">
                             <label for="price" class="form-label">Product Price</label>
-                            <input name="price" required value="{{ old('price') }}" type="number" class="form-control rounded-top @error ('price') is invalid @enderror" id="formGroupExampleInput" placeholder="Input Price Rp">
+                            @error('price')
+                              <div class="text-danger">
+                                  {{ $message }}
+                              </div>
+                            @enderror
+                            <input name="price" required value="{{ old('price') }}" type="text" class="form-control rounded-top @error ('price') is invalid @enderror" id="formGroupExampleInput" placeholder="Input Price Rp">
                         </div>
                         <button type="submit" class="btn btn-success">Insert</button>
                     </form>
