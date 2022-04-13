@@ -37,7 +37,7 @@ class ProductRequest extends FormRequest
         return [
             'name.min' => 'Nama produk minimal 5 karakter',
             'name.max' => 'Nama produk maksimal 80 karakter',
-            'image' => 'file harus berupa gambar',
+            //'image' => 'file harus berupa gambar',
             'price.numeric' => 'harga harus berupa angka',
             'quantity.numeric' => 'jumlah harus berupa angka',
         ];

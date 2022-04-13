@@ -31,6 +31,8 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
     Route::get('/createProduct', [AdminController::class, 'createProduct'])->name('createProduct');
 
     Route::get('/dashboardAdmin', [AdminController::class, 'dashboardAdmin'])->name('dashboardAdmin');
-    
+
     Route::post('/addProduct', [AdminController::class, 'addProduct'])->name('addProduct');
+
+    Route::post('/deleteProduct/{id}', [AdminController::class, 'deleteProduct'])->name('deleteProduct');
 });

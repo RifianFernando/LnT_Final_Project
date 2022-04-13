@@ -50,7 +50,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/virtual-reality.html">
+          <a class="nav-link text-white " href="">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">view_in_ar</i>
             </div>
@@ -58,7 +58,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/rtl.html">
+          <a class="nav-link text-white " href="">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
             </div>
@@ -66,7 +66,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/notifications.html">
+          <a class="nav-link text-white " href="">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">notifications</i>
             </div>
@@ -77,28 +77,31 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/profile.html">
+          <a class="nav-link text-white " href="">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
-            <span class="nav-link-text ms-1">Profile</span>
+            @php
+              $profile = Auth::user();
+              $user = $profile->name;
+              $words = explode(" ", $user);
+              $firstname = $words[0];
+            @endphp
+            <span class="nav-link-text ms-1">{{ $firstname }}</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-in.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">login</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign In</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-up.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">assignment</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign Up</span>
-          </a>
+          <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="btnlogout">
+              <a class="nav-link text-white">
+                  <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="material-icons opacity-10">logout</i>
+                  </div>
+                <span class="nav-link-text ms-1">Logout</span>
+              </a>
+            </button>
+          </form>
         </li>
       </ul>
     </div>
@@ -125,13 +128,6 @@
               <input type="text" class="form-control" name="cari">
             </form>
           </div>
-          <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <li class="nav-item d-flex align-items-center">
-                <i class="fa fa-user me-sm-1"></i>
-                <button class="d-sm-inline d-none text-body font-weight-bold px-0">Log Out</button>
-            </li>
-          </form>
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
@@ -169,39 +165,49 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">John Michael</h6>
-                            <p class="text-xs text-secondary mb-0">john@creative-tim.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Manager</p>
-                        <p class="text-xs text-secondary mb-0">Organization</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <a href=""> <span class="badge badge-sm bg-gradient-danger">delete</span></a>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">Rp5,000.00<br>
-                          <form class="form-add-cart" action="" method="post">
-                            @csrf
-                            <input class="sisa-barang" value="23" type="number">
-                          </form>
-                        </span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr>
+                    @if($products->count() == 0)
+                      <tr>
+                        <td colspan="5" class="text-center font-weight-bolder">Produk Kosong</td>
+                      </tr>
+                    @endif
+                    @foreach ($products as $product)
+                        <tr>
+                          <td>
+                            <div class="d-flex px-2 py-1">
+                              <div>
+                                <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+                              </div>
+                              <div class="d-flex flex-column justify-content-center">
+                                <h6 class="mb-0 text-sm">{{ $product->name }}</h6>
+                                <p class="text-xs text-secondary mb-0">john@creative-tim.com</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <p class="text-xs font-weight-bold mb-0">{{ $product->category }}</p>
+                            <p class="text-xs text-secondary mb-0">Organization</p>
+                          </td>
+                          <td class="align-middle text-center text-sm">
+                            <form action="{{ route('deleteProduct', $product->id) }}" method="POST">
+                              @csrf
+                             <button class="delete-product" type="submit"><span type="submit" class="badge badge-sm bg-gradient-danger">delete</span></button>
+                            </form>
+                          </td>
+                          <td class="align-middle text-center">
+                            <span class="text-secondary text-xs font-weight-bold">Rp5,000.00<br>
+                              <form class="form-add-cart" action="" method="post">
+                                @csrf
+                                <input class="sisa-barang" value="23" type="number">
+                              </form>
+                            </span>
+                          </td>
+                          <td class="align-middle">
+                            <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                              Edit
+                            </a>
+                          </td>
+                        </tr>
+                    @endforeach
                     
                   </tbody>
                 </table>

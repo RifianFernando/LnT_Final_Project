@@ -17555,3 +17555,20 @@ pre[class*="language-"] {
   .ps {
     overflow: auto !important; } }
 /*# sourceMappingURL=material-dashboard.css.map */
+
+.delete-product{
+  border-style: none;
+  background-color: transparent;
+}
+
+.btnlogout{
+  border-style: none;
+  background-color: transparent;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+.btnlogout a{
+  width: 100%;
+  padding:0;
+}

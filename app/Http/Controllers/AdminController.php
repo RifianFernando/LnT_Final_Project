@@ -10,14 +10,15 @@ use App\Http\Requests\ProductRequest;
 class AdminController extends Controller
 {
     public function createProduct(){
-
-        return view('admin.createproduct');
+        
+        return view('admin.createProduct');
     }
 
     public function dashboardAdmin()
     {
+        $products = Products::all();
 
-        return view('admin.dashboard');
+        return view('admin.dashboard', compact('products'));
     }
 
     public function addProduct(ProductRequest $request){
@@ -37,4 +38,12 @@ class AdminController extends Controller
 
         return redirect(route('createProduct'))->with('success', 'Produk berhasil ditambahkan');
     }
+
+    public function deleteProduct($id){
+        $product = Products::find($id);
+        $product->destroy($id);
+
+        return redirect(route('dashboardAdmin'))->with('success', 'Produk berhasil dihapus');
+    }
+        
 }
