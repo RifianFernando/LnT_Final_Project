@@ -163,9 +163,13 @@
             <div class="card-body px-0 pb-2">
               <div class="table-responsive p-0">
                 <div class="isi-addproduct">
-                      <form action="{{ route('addProduct') }}" method="POST" enctype="multipart/form-data" class="isi-data">
+                      <form action="/addProduct" method="POST" enctype="multipart/form-data" class="isi-data">
                         @csrf
-                        
+                        @if($success = Session::get('success'))
+                          <div class="alert alert-success font-weight-bolder">
+                            {{ $success }}
+                          </div>
+                        @endif
                         <div class="mb-3">
                             <label for="name" class="form-label">Product Name</label>
                             @error('name')
@@ -213,7 +217,7 @@
                                   {{ $message }}
                               </div>
                             @enderror
-                            <input name="price" required value="{{ old('price') }}" type="text" class="form-control rounded-top @error ('price') is invalid @enderror" id="formGroupExampleInput" placeholder="Input Price Rp">
+                            <input name="price" required value="{{ old('price') }}" type="number" class="form-control rounded-top @error ('price') is invalid @enderror" id="formGroupExampleInput" placeholder="Input Price Rp">
                         </div>
                         <button type="submit" class="btn btn-success">Insert</button>
                     </form>

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductRequest;
-use App\Models\Product;
+use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use App\Http\Requests\ProductRequest;
 
 class AdminController extends Controller
 {
-    public function createProduct()
-    {
+    public function createProduct(){
+
         return view('admin.createproduct');
     }
 
@@ -20,10 +21,13 @@ class AdminController extends Controller
     }
 
     public function addProduct(ProductRequest $request){
+        $validate = $request->validate([
+            'image' => 'required|min:5|mimes:jpeg,jpg,png,gif',
+        ]);
         $path = $request->file('image')->store('public/Images');
         $path = substr($path, strlen('public/'));
-        
-        Product::create([
+
+        Products::create([
             'name' => $request->name,
             'category' => $request->category,
             'quantity' => $request->quantity,
@@ -31,6 +35,6 @@ class AdminController extends Controller
             'price' => $request->price,
         ]);
 
-        return redirect(route('home'))->with('success', 'Produk berhasil ditambahkan');
+        return redirect(route('createProduct'))->with('success', 'Produk berhasil ditambahkan');
     }
 }

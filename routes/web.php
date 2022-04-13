@@ -28,7 +28,9 @@ require __DIR__.'/auth.php';
 
 //admin
 Route::group(['middleware' => AdminMiddleware::class], function () {
-    Route::get('/CreateProduct', [AdminController::class, 'createProduct'])->name('createProduct');
+    Route::get('/createProduct', [AdminController::class, 'createProduct'])->name('createProduct');
+
     Route::get('/dashboardAdmin', [AdminController::class, 'dashboardAdmin'])->name('dashboardAdmin');
+    
     Route::post('/addProduct', [AdminController::class, 'addProduct'])->name('addProduct');
 });

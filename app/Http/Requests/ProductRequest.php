@@ -27,11 +27,11 @@ class ProductRequest extends FormRequest
             'name' => 'required|min:5|string|max:80',
             'category' => 'required|string|max:255',
             'quantity'=>'required|numeric',
-            'image ' => 'required|image',
-            'price' => 'required|numeric',
+            //'image ' => 'required|mimes:jpeg,jpg,png,gif',
+            'price' => 'required|numeric'
         ];
     }
-
+    
     public function messages()
     {
         return [
