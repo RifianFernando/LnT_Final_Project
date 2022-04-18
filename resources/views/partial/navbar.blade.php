@@ -15,9 +15,6 @@
           <li class="nav-item">
             <a class="nav-link {{($title === "Cart") ? 'active' : ''}}" aria-current="page" href="{{ route('cart') }}"><b>Cart</b></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link {{($title === "delete") ? 'active' : ''}}" aria-current="page" href="/deleteproduct"><b>Delete Product</b></a>
-          </li>
         </ul>
         <ul class= "navbar-nav ms-auto">
         <li class= "nav-item">

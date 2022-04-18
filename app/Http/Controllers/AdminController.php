@@ -15,6 +15,7 @@ class AdminController extends Controller
         $products = Products::all();
         return view('products', ['title' => 'Home', 'products' => $products]);
     }
+    
     public function createProduct(){
         
         return view('admin.createProduct');

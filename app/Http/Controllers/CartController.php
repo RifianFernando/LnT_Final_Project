@@ -101,4 +101,12 @@ class CartController extends Controller
             session()->flash('success', 'Product removed successfully');
         }
     }
+
+    public function searchProduct(Request $request)
+    {
+        $search = $request->search;
+        $products = Products::where('name', 'like', '%'.$search.'%')->get();
+        //return view('search', ['products' => $products, 'title' => 'Search']);
+        return view('products', ['title' => 'Home', 'products' => $products]);
+    }
 }

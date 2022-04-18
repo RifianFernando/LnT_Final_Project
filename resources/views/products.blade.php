@@ -6,9 +6,9 @@
         <div>
             <div class="row justify-content-center">
                 <div class="col-md-6">
-                    <form action="/products">
+                    <form action="{{ route('searchProduct') }}" method="GET">
                         <div class="input-group mb-3">
-                            <input type= "text" class="form-control" placeholder="search.." name="search" value="{{ request('search') }}">
+                            <input type= "text" class="form-control" placeholder="search.." name="search">
                             <button class="btn btn-danger" type="submit">Search</button>
                         </div>
                     </form>
