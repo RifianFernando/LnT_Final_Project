@@ -17,7 +17,7 @@ class Products extends Model
         'price'
     ];
 
-    public function user() {
-        return $this->hasMany(User::class);
+    public function totalproduct() {
+        return $this->hasMany(TotalProduct::class);
     }
 }

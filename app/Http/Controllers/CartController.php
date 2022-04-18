@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Admin;
 use App\Models\Products;
+use Illuminate\Http\Request;
+use App\Models\QuantityProduct;
+use App\Http\Controllers\Controller;
+use App\Models\TotalProduct;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -18,47 +23,39 @@ class CartController extends Controller
         return view('createproduct', ['title' => 'Create']);
     }
 
-    public function addbarang(Request $request)
-    {
-        Products::create([
-            'name' => $request -> title,
-            'price' => $request -> price,
-            'description' => $request -> brand,
-            'image' => $request -> image
-        ]);
-        // $imageName = time().'.'.$request->image->extension();
-        $imageName = $request->image->getClientOriginalName();
-        $request->image->storeAs('images', $imageName);
-        return redirect('/');
-    }
-
-
     /**
      * adding barang dari tombol home ke halaman cart
      *
      * @return response()
      */
-    public function addToCart($id)
-    {
-        $product = Products::findOrFail($id);
-
-        $cart = session()->get('cart', []);
-
-        if(isset($cart[$id])) {
-            $cart[$id]['quantity']++;
-        } else {
-            // spesifikasi barang di cart
-            $cart[$id] = [
-                "name" => $product->name,
-                "quantity" => 1,
-                "price" => $product->price,
-                "image" => $product->image
-            ];
+    public function addToCart($id){
+        $user = Auth::user()->id;
+        $id_barang  = Products::find($id)->id;
+        $quantity_table = TotalProduct::where('users_id', $user)->where('products_id', $id_barang)->first();
+        if($quantity_table == null){
+            TotalProduct::create([
+                'users_id' => $user,
+                'products_id' => $id_barang,
+                'quantity' => 1
+            ]);
+        }else{
+            $quantity_table->update([
+                'quantity' => $quantity_table->quantity + 1
+            ]); 
         }
-
-        // taro ke barang
-        session()->put('cart', $cart);
-        return redirect()->back();
+        $quantity = TotalProduct::where('users_id', $user)->get('products_id');
+        for($i = 0; $i < count($quantity); $i++){
+            $detail_product_user = $quantity[$i]->products_id;
+            $cart[$i] = Products::find($detail_product_user);
+        }
+        $product_quantity = TotalProduct::where('users_id', $user)->get();
+        for($i = 0; $i < count($product_quantity); $i++){
+            $kuantitas[$i] = $product_quantity[$i]->quantity;
+        }
+        if(empty($kuantitas) || empty($cart)){
+            return redirect(route('home')); 
+        };
+        return redirect(route('home'));
     }
 
     /**
