@@ -37,12 +37,22 @@
               <div class="card-body">
                 <p class="card-text">{{ $product->name }}</p>
                 <p class="card-text">{{ $product->category }}</p>
-                <p class="card-text">{{ $product->price }}$</p>
+                @php
+                  $angka = $product->price;
+                  $hasil_rupiah = "Rp" . number_format($angka,2,',','.');
+                @endphp
+                <p class="card-text">{{ $hasil_rupiah }}</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
-                    <p class="btn-holder"><a href="{{ route('add.to.cart', $product->id) }}" class="btn btn-warning btn-block text-center" role="button">Add to cart</a></p>
+                    <p class="btn-holder"><a href="{{ route('addToCart', $product->id) }}" class="btn btn-warning btn-block text-center" role="button">Add to cart</a></p>
                   </div>
-                  <small class="text-muted">9 mins</small>
+                  @php
+                    $time = strtotime($product->created_at);
+                    $compare_time = strtotime(date('Y-m-d H:i:s'));
+                    $difference = $compare_time - $time;
+                    $difference = round($difference / 60);
+                  @endphp
+                  <small class="text-muted">{{ $difference }} min ago</small>
                 </div>
               </div>
             </div>

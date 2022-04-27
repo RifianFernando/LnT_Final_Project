@@ -14,7 +14,22 @@ class CartController extends Controller
 {
     public function cart()
     {
-        return view('cart', ['title' => 'Cart']);
+        $user = Auth::user()->id;
+        $quantity = TotalProduct::where('users_id', $user)->get('products_id');
+        for($i = 0; $i < count($quantity); $i++){
+            $detail_product_user = $quantity[$i]->products_id;
+            $cart[$i] = Products::find($detail_product_user);
+        }
+        $product_quantity = TotalProduct::where('users_id', $user)->get();
+        for($i = 0; $i < count($product_quantity); $i++){
+            $kuantitas[$i] = $product_quantity[$i]->quantity;
+        }
+        if(empty($kuantitas) || empty($cart)){
+            return view('cart', ['title' => 'Cart']); 
+        };
+
+        $Looping_cart = count($kuantitas);
+        return view('cart', ['title' => 'Cart', 'cart' => $cart, 'kuantitas' => $kuantitas, 'Looping_cart' => $Looping_cart]);
     }
 
     //addproduct
@@ -36,25 +51,13 @@ class CartController extends Controller
             TotalProduct::create([
                 'users_id' => $user,
                 'products_id' => $id_barang,
-                'quantity' => 1
             ]);
         }else{
             $quantity_table->update([
                 'quantity' => $quantity_table->quantity + 1
             ]); 
         }
-        $quantity = TotalProduct::where('users_id', $user)->get('products_id');
-        for($i = 0; $i < count($quantity); $i++){
-            $detail_product_user = $quantity[$i]->products_id;
-            $cart[$i] = Products::find($detail_product_user);
-        }
-        $product_quantity = TotalProduct::where('users_id', $user)->get();
-        for($i = 0; $i < count($product_quantity); $i++){
-            $kuantitas[$i] = $product_quantity[$i]->quantity;
-        }
-        if(empty($kuantitas) || empty($cart)){
-            return redirect(route('home')); 
-        };
+
         return redirect(route('home'));
     }
 
@@ -72,38 +75,25 @@ class CartController extends Controller
             session()->flash('success', 'Cart updated successfully');
         }
     }
-//delete product
-    public function delete($id)
-    {
-        $products = Products::all();
-        Products::destroy($id);
-        return view('deleteproduct', compact('products'), [
-            "title" => 'delete'
-        ]);
-    }
-
     /**
-     * delete di keranjang
+     * delete barang di cart
      *
      * @return response()
      */
     public function remove(Request $request)
     {
-        if($request->id) {
-            $cart = session()->get('cart');
-            if(isset($cart[$request->id])) {
-                unset($cart[$request->id]);
-                session()->put('cart', $cart);
-            }
-            session()->flash('success', 'Product removed successfully');
-        }
+        $id_product = $request->id;
+        $user = Auth::user()->id;
+        $cart = TotalProduct::where('users_id', $user)->where('products_id', $id_product)->first();
+        $cart->delete();
+        
+        return redirect(route('cart'))->with('success', 'Product removed successfully');
     }
 
     public function searchProduct(Request $request)
     {
         $search = $request->search;
         $products = Products::where('name', 'like', '%'.$search.'%')->get();
-        //return view('search', ['products' => $products, 'title' => 'Search']);
         return view('products', ['title' => 'Home', 'products' => $products]);
     }
 }

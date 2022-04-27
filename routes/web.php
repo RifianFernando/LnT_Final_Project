@@ -26,9 +26,11 @@ Route::get('/AboutUs', function () {
 
 Route::get('/cart', [CartController::class, 'cart'])->middleware('auth')->name('cart');
 
-Route::get('add-to-cart/{id}', [CartController::class, 'addToCart'])->name('add.to.cart');
+Route::delete('/remove/{id}', [CartController::class, 'remove'])->middleware('auth')->name('remove.from.cart');
+
+Route::get('add-to-cart/{id}', [CartController::class, 'addToCart'])->middleware('auth')->name('addToCart');
+
 Route::patch('update-cart', [CartController::class, 'update'])->name('update.cart');
-Route::delete('remove-from-cart', [CartController::class, 'remove'])->name('remove.from.cart');
 
 Route::get('/search', [CartController::class, 'searchProduct'])->name('searchProduct');
 
