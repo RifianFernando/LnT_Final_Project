@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class TotalProduct extends Model
 {
     use HasFactory;
-    protected $table = 'total_products';
+    public $table = "total_product_user";
+
+    public $timestamps = false;
     protected $fillable = [
+        'id',
         'users_id',
         'products_id',
         'quantity'
@@ -22,4 +25,5 @@ class TotalProduct extends Model
     public function product() {
         return $this->hasMany(Products::class);
     }
+
 }

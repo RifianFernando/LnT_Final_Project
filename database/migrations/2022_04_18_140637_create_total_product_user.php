@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('users_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('products_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
-            $table->integer('quantity');
+            $table->integer('quantity')->default(1);
         });
     }
 
