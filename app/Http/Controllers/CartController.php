@@ -47,18 +47,32 @@ class CartController extends Controller
         $user = Auth::user()->id;
         $id_barang  = Products::find($id)->id;
         $quantity_table = TotalProduct::where('users_id', $user)->where('products_id', $id_barang)->first();
-        if($quantity_table == null){
-            TotalProduct::create([
-                'users_id' => $user,
-                'products_id' => $id_barang,
-            ]);
-        }else{
-            $quantity_table->update([
-                'quantity' => $quantity_table->quantity + 1
-            ]); 
+        $stock_table = Products::find($id)->quantity;
+        if($stock_table == 0){
+            return redirect(route('home'))->with('error', 'Maaf, stok barang sudah habis');
         }
+        else{
+            if($quantity_table == null){
+                TotalProduct::create([
+                    'users_id' => $user,
+                    'products_id' => $id_barang,
+                ]);
+                $stock_table = $stock_table - 1;
+                Products::find($id)->update([
+                    'quantity' => $stock_table,
+                ]);
+            }else{
+                $quantity_table->update([
+                    'quantity' => $quantity_table->quantity + 1
+                ]);
+                $stock_table = $stock_table - 1;
+                Products::find($id)->update([
+                    'quantity' => $stock_table,
+                ]);
+            }
 
-        return redirect(route('home'));
+            return redirect(route('home'));
+        }
     }
 
     /**
@@ -80,8 +94,14 @@ class CartController extends Controller
      *
      * @return response()
      */
-    public function remove(Request $request)
+    public function remove(Request $request, $id)
     {
+        $stock_table = Products::find($id)->quantity;
+        $last_add_Stock = TotalProduct::where('products_id', $id)->first();
+        $stock_table = $stock_table + $last_add_Stock->quantity;
+        Products::find($id)->update([
+            'quantity' => $stock_table,
+        ]);
         $id_product = $request->id;
         $user = Auth::user()->id;
         $cart = TotalProduct::where('users_id', $user)->where('products_id', $id_product)->first();
