@@ -30,9 +30,19 @@ Route::delete('/remove/{id}', [CartController::class, 'remove'])->middleware('au
 
 Route::get('add-to-cart/{id}', [CartController::class, 'addToCart'])->middleware('auth')->name('addToCart');
 
-Route::patch('update-cart', [CartController::class, 'update'])->name('update.cart');
+Route::get('add-to-cart-cart/{id}', [CartController::class, 'addToCartOnCart'])->middleware('auth')->name('addToCartOnCart');
+
+Route::get('increment-cart/{id}', [CartController::class, 'incrementOnCart'])->middleware('auth')->name('incrementOnCart');
 
 Route::get('/search', [CartController::class, 'searchProduct'])->name('searchProduct');
+
+Route::get('/invoice', [CartController::class, 'invoicePage'])->middleware('auth')->name('invoicePage');
+
+///
+
+Route::patch('update-cart', [CartController::class, 'update'])->name('update.cart');
+
+///
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -47,4 +47,8 @@ class User extends Authenticatable
     public function product(){
         return $this->hasMany(TotalProduct::class);
     }
+
+    public function invoice(){
+        return $this->hasMany(invoiceUser::class);
+    }
 }

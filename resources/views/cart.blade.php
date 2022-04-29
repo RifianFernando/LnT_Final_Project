@@ -8,6 +8,10 @@
         <div class="alert alert-success">
           {{ session('success') }}
         </div>
+    @elseif(session('error'))
+        <div class="alert alert-danger">
+          {{ session('error') }}
+        </div>
     @endif
 
 </div>
@@ -43,6 +47,9 @@
                             <div class="col-sm-3 hidden-xs"><img src="{{ asset('storage/'.$cart->image) }}" width="100" height="100" class="img-responsive"/></div>
                             <div class="col-sm-9">
                                 <h4 class="nomargin">{{ $cart->name }}</h4>
+                                @if($error = Session::get('errorId') == $cart->id)
+                                <div class="alert alert-danger">{{ Session::get('error') }}</div>
+                                @endif
                             </div>
                         </div>
                     </td>
@@ -52,7 +59,19 @@
                     @endphp
                     <td data-th="Price">{{ $hasil_rupiah }}</td>
                     <td data-th="Quantity">
-                        <input type="number" value="{{ $kuantitas[$i] }}" class="form-control quantity update-cart" />
+                        <form action="{{ route('addToCartOnCart', ['id'=>$cart->id]) }}" method="get">
+                            @csrf
+                              <button type="submit" class="tanda-tambah">
+                                +
+                              </button>
+                        </form>
+                        <input type="number" disabled value="{{ $kuantitas[$i] }}" class="form-control quantity update-cart" />
+                        <form action="{{ route('incrementOnCart', ['id'=>$cart->id]) }}" method="get">
+                            @csrf
+                              <button type="submit" class="tanda-tambah">
+                                -
+                              </button>
+                        </form>
                     </td>
                     <td data-th="Subtotal" class="text-center">
                         @php
@@ -84,38 +103,10 @@
             <td colspan="5" class="text-right"><h3><strong>Total {{ $total_all_rupiah }}</strong></h3></td>
         </tr>
         <tr>
-            @if (isset($cart))
-                <td colspan="5" class="text-right">
-                    <a href="" class="btn btn-danger"><i class="fa fa-angle-right"></i> Checkout</a>
-                </td>
-            @else
-                <td colspan="5" class="text-right">
-                    <a href="" class="btn btn-danger"><i class="fa fa-angle-right"></i>Checkin</a>
-                </td>
-            @endif
+            <td colspan="5" class="text-right">
+                <a href="{{ route('invoicePage', ) }}" class="btn btn-danger"><i class="fa fa-angle-right"></i> Checkout</a>
+            </td>
         </tr>
     </tfoot>
 </table>
-<script type="text/javascript">
-
-    $(".update-cart").change(function (e) {
-        e.preventDefault();
-
-        var ele = $(this);
-
-        $.ajax({
-            url: '{{ route('update.cart') }}',
-            method: "patch",
-            data: {
-                _token: '{{ csrf_token() }}',
-                id: ele.parents("tr").attr("data-id"),
-                quantity: ele.parents("tr").find(".quantity").val()
-            },
-            success: function (response) {
-               window.location.reload();
-            }
-        });
-    });
-
-</script>
 @endsection
