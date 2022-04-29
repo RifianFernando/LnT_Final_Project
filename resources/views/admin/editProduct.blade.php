@@ -45,7 +45,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('createProduct') }}">
+          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('updateProduct', ['id'=>$product->id]) }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">update</i>
             </div>

@@ -49,7 +49,7 @@ class CartController extends Controller
         $quantity_table = TotalProduct::where('users_id', $user)->where('products_id', $id_barang)->first();
         $stock_table = Products::find($id)->quantity;
         if($stock_table == 0){
-            return redirect(route('home'))->with('error', 'Maaf, stok barang sudah habis');
+            return back()->with(['errorId'=>$id, 'error'=>'Maaf, stok barang sudah habis']);
         }
         else{
             if($quantity_table == null){

@@ -42,6 +42,7 @@
                   $hasil_rupiah = "Rp" . number_format($angka,2,',','.');
                 @endphp
                 <p class="card-text">{{ $hasil_rupiah }}</p>
+                <p class="card-text">Stock {{ $product->quantity }}</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
                     <p class="btn-holder"><a href="{{ route('addToCart', $product->id) }}" class="btn btn-warning btn-block text-center" role="button">Add to cart</a></p>
@@ -54,6 +55,11 @@
                   @endphp
                   <small class="text-muted">{{ $difference }} min ago</small>
                 </div>
+                  @if($check = Session::get('errorId') == $product->id)
+                      @if($success = Session::get('error'))
+                          <div class="alert alert-danger">{{ $success }}</div>
+                      @endif
+                  @endif
               </div>
             </div>
           </div>
