@@ -23,7 +23,7 @@
             <div class="col-7">
                 <div class="row text-right">
                     <div class="col-4">
-                        <h6 class="mt-2">Format</h6>
+                        <h6 class="mt-2">Category</h6>
                     </div>
                     <div class="col-4">
                         <h6 class="mt-2">Quantity</h6>
@@ -34,101 +34,79 @@
                 </div>
             </div>
         </div>
-        <div class="row d-flex justify-content-center border-top">
-            <div class="col-5">
-                <div class="row d-flex">
-                    <div class="book"> <img src="https://i.imgur.com/2DsA49b.jpg" class="book-img"> </div>
-                    <div class="my-auto flex-column d-flex pad-left">
-                        <h6 class="mob-text">Thinking, Fast and Slow</h6>
-                        <p class="mob-text">Daniel Kahneman</p>
-                    </div>
-                </div>
-            </div>
-            <div class="my-auto col-7">
-                <div class="row text-right">
-                    <div class="col-4">
-                        <p class="mob-text">Digital</p>
-                    </div>
-                    <div class="col-4">
-                        <div class="row d-flex justify-content-end px-3">
-                            <p class="mb-0" id="cnt1">1</p>
-                            <div class="d-flex flex-column plus-minus"> <span class="vsm-text plus">+</span> <span class="vsm-text minus">-</span> </div>
+        @php
+            $total = 0;
+            $i = 0;
+        @endphp
+        @foreach($cart as $cart)
+            <div class="row d-flex justify-content-center border-top">
+                <div class="col-5">
+                    <div class="row d-flex">
+                        <div class="book"> <img src="{{ asset('storage/'.$cart->image) }}" class="book-img"> </div>
+                        <div class="my-auto flex-column d-flex pad-left">
+                            <h6 class="mob-text">{{ $cart->name }}</h6>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <h6 class="mob-text">$9.99</h6>
-                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="row d-flex justify-content-center border-top">
-            <div class="col-5">
-                <div class="row d-flex">
-                    <div class="book"> <img src="https://i.imgur.com/Oj1iQUX.jpg" class="book-img"> </div>
-                    <div class="my-auto flex-column d-flex pad-left">
-                        <h6 class="mob-text">Homo Deus: A Brief<br>History of Tomorrow</h6>
-                        <p class="mob-text">Yuval Noah Harari</p>
-                    </div>
-                </div>
-            </div>
-            <div class="my-auto col-7">
-                <div class="row text-right">
-                    <div class="col-4">
-                        <p class="mob-text">Paperback</p>
-                    </div>
-                    <div class="col-4">
-                        <div class="row d-flex justify-content-end px-3">
-                            <p class="mb-0" id="cnt2">1</p>
-                            <div class="d-flex flex-column plus-minus"> <span class="vsm-text plus">+</span> <span class="vsm-text minus">-</span> </div>
+                <div class="my-auto col-7">
+                    <div class="row text-right">    
+                        <div class="col-4">
+                            <p class="mob-text">{{ $cart->category }}</p>
+                        </div>
+                        <div class="col-4">
+                            <div class="row d-flex justify-content-end px-3">
+                                <p class="mb-0" id="cnt1">{{ $kuantitas[$i] }}</p>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            @php
+                                $total_price = $cart->price;
+                                $total += $total_price * $kuantitas[$i];
+                                $i++;
+                                $total_price_rupiah = "Rp" . number_format($total_price,2,',','.');
+                            @endphp
+                            <h6 class="mob-text">{{ $total_price_rupiah }}</h6>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <h6 class="mob-text">$13.50</h6>
-                    </div>
                 </div>
             </div>
-        </div>
+        @endforeach
         <div class="row justify-content-center">
             <div class="col-lg-12">
-                <div class="card">
-                    <div class="row">
-                        <div class="col-lg-3 radio-group">
-                            <div class="row d-flex px-3 radio"> <img class="pay" src="https://i.imgur.com/WIAP9Ku.jpg">
-                                <p class="my-auto">Credit Card</p>
-                            </div>
-                            <div class="row d-flex px-3 radio gray"> <img class="pay" src="https://i.imgur.com/OdxcctP.jpg">
-                                <p class="my-auto">Debit Card</p>
-                            </div>
-                            <div class="row d-flex px-3 radio gray mb-3"> <img class="pay" src="https://i.imgur.com/cMk1MtK.jpg">
-                                <p class="my-auto">PayPal</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-5">
-                            <div class="row px-2">
-                                <div class="form-group col-md-6"> <label class="form-control-label">Name on Card</label> <input type="text" id="cname" name="cname" placeholder="Johnny Doe"> </div>
-                                <div class="form-group col-md-6"> <label class="form-control-label">Card Number</label> <input type="text" id="cnum" name="cnum" placeholder="1111 2222 3333 4444"> </div>
-                            </div>
-                            <div class="row px-2">
-                                <div class="form-group col-md-6"> <label class="form-control-label">Expiration Date</label> <input type="text" id="exp" name="exp" placeholder="MM/YYYY"> </div>
-                                <div class="form-group col-md-6"> <label class="form-control-label">CVV</label> <input type="text" id="cvv" name="cvv" placeholder="***"> </div>
+                @php
+                    $id = Auth::user()->id;
+                @endphp
+                <form class="card" action="{{ route('makeInvoice', ['id'=>$id]) }}" method="POST">
+                @csrf
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10">
+                            <div class="coloumn px-2">
+                                @error('shipping_address')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                                <div class="form-group col-md-15"> <label class="form-control-label">Shipping Address</label> <input type="text" id="cname" name="shipping_address" placeholder="Johnny Dodol"> 
+                                </div>
+
+                                @error('postal_code')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                                <div class="form-group col-md-15"> <label class="form-control-label">Postal Code</label> <input type="text" id="cnum" name="postal_code" placeholder="065478"> 
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-4 mt-2">
-                            <div class="row d-flex justify-content-between px-4">
-                                <p class="mb-1 text-left">Subtotal</p>
-                                <h6 class="mb-1 text-right">$23.49</h6>
-                            </div>
-                            <div class="row d-flex justify-content-between px-4">
-                                <p class="mb-1 text-left">Shipping</p>
-                                <h6 class="mb-1 text-right">$2.99</h6>
-                            </div>
+                                @php
+                                    $total_price_rupiah = "Rp" . number_format($total,2,',','.');
+                                @endphp
                             <div class="row d-flex justify-content-between px-4" id="tax">
-                                <p class="mb-1 text-left">Total (tax included)</p>
-                                <h6 class="mb-1 text-right">$26.48</h6>
-                            </div> <button class="btn-block btn-blue"> <span> <span id="checkout">Make Invoice</span> <span id="check-amt">$26.48</span> </span> </button>
+                                <p class="mb-1 text-left">Total</p>
+                                <h6 class="mb-1 text-right">{{ $total_price_rupiah }}</h6>
+                            </div> 
+                            <a href="{{ route('cart') }}" class="btn btn-danger"><i class="fa fa-angle-left"></i> Back</a>
+                            <button type="submit" class="btn-block btn-blue"> <span> <span id="checkout">Make Invoice</span> <span id="check-amt">{{ $total_price_rupiah }}</span> </span> </button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

@@ -38,6 +38,8 @@ Route::get('/search', [CartController::class, 'searchProduct'])->name('searchPro
 
 Route::get('/invoice', [CartController::class, 'invoicePage'])->middleware('auth')->name('invoicePage');
 
+Route::post('/invoice/{id}', [CartController::class, 'makeInvoice'])->middleware('auth')->name('makeInvoice');
+
 ///
 
 Route::patch('update-cart', [CartController::class, 'update'])->name('update.cart');

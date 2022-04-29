@@ -104,7 +104,7 @@
         </tr>
         <tr>
             <td colspan="5" class="text-right">
-                <a href="{{ route('invoicePage', ) }}" class="btn btn-danger"><i class="fa fa-angle-right"></i> Checkout</a>
+                <a href="{{ route('invoicePage') }}" class="btn btn-danger"><i class="fa fa-angle-right"></i> Checkout</a>
             </td>
         </tr>
     </tfoot>
