@@ -36,8 +36,7 @@ class invoiceRequest extends FormRequest
             'shipping_address.min' => 'Alamat pengiriman minimal 10 karakter',
             'shipping_address.max' => 'Alamat pengiriman maksimal 100 karakter',
             'postal_code.required' => 'Kode pos harus diisi',
-            'postal_code.min' => 'Kode pos minimal 5 karakter',
-            'postal_code.max' => 'Kode pos maksimal 5 karakter',
+            'postal_code.digits' => 'Kode pos wajib 5 karakter',
             'postal_code.integer' => 'Kode pos harus berupa angka',
         ];
     }
